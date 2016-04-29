@@ -14,6 +14,7 @@ const int port = 9090;
 const int buffer_size = 1<<10;
 const int method_size = 1<<5;
 const int filename_size = 1<<5;
+const int common_buffer_size = 1<<5;
 
 void handleError(const string &message);
 void requestHandling(int *sock);
@@ -97,7 +98,23 @@ void requestHandling(int *sock){
 }
 
 void sendData(int *sock, char *filename) {
+    int client_sock = *sock;
+    char buffer[common_buffer_size];
+    char type[common_buffer_size];
 
+    strtok(buffer, ".");
+    strcpy(type, strtok(NULL, "."));
+    if(0 == strcmp(type, "php")){
+
+    }else if(0 == strcmp(type, "html")){
+
+    }else if(0 == strcmp(type, "jpg")){
+
+    }else{
+        sendError(sock);
+        close(clnt_sock);
+        return ;
+    }
 }
 
 void handleError(const string &message) {
