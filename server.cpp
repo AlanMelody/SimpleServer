@@ -33,10 +33,6 @@ int main()
 
 	socklen_t client_address_size;
 
- //    char status[] = "HTTP/1.0 200 OK\r\n";
- //    char header[] = "Server: A Simple Web Server\r\nContent-Type: text/html\r\n\r\n";
- //    char body[] = "<html><head><title>A Simple Web Server</title></head><body><h2>Welcome!</h2><p>This is a simple server.</p></body></html>";
-
     server_sock = socket(PF_INET, SOCK_STREAM, 0);
 
     if (server_sock == -1)
