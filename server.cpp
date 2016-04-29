@@ -151,7 +151,35 @@ void sendHTML(int *sock, char *filename) {
 }
 
 void sendJPG(int *sock, char *filename) {
+    int client_sock = *sock;
+    char buffer[buffer_size];
+    FILE *fp;
+    FILE *fw;
 
+    char status[] = "HTTP/1.0 200 OK\r\n";
+    char header[] = "Server: A Simple Web Server\r\nContent-Type: image/jpeg\r\n\r\n";
+
+    write(client_sock, status, strlen(status));
+    write(client_sock, header, strlen(header));
+
+    fp = fopen(filename, "rb");
+    if(NULL == fp){
+        sendError(sock);
+        close(client_sock);
+        handleError("failed to open file");
+        return ;
+    }
+
+    fw = fdopen(client_sock, "w");
+    fread(buffer, 1, sizeof(buffer), fp);
+    while (!feof(fp)){
+        fwrite(buffer, 1, sizeof(buffer), fw);
+        fread(buffer, 1, sizeof(buffer), fp);
+    }
+
+    fclose(fw);
+    fclose(fp);
+    close(client_sock);
 }
 
 void handleError(const string &message) {
