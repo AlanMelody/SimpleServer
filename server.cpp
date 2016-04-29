@@ -11,10 +11,10 @@
 using namespace std;
 
 const int port = 9090;
-const int buffer_size = 1<<10;
-const int method_size = 1<<5;
-const int filename_size = 1<<5;
-const int common_buffer_size = 1<<5;
+const int buffer_size = 1<<30;
+const int method_size = 1<<30;
+const int filename_size = 1<<30;
+const int common_buffer_size = 1<<30;
 
 void handleError(const string &message);
 void requestHandling(int *sock);
