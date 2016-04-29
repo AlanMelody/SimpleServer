@@ -50,6 +50,8 @@ int main()
     	handleError("listen error");
     }
 
+    system("open http://127.0.0.1:9090");
+
     client_address_size = sizeof(client_address);
     client_sock = accept(server_sock, (struct sockaddr*) &client_address, &client_address_size);
 
