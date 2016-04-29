@@ -20,6 +20,8 @@ void handleError(const string &message);
 void requestHandling(int *sock);
 void sendError(int *sock);
 void sendData(int *sock, char *filename);
+void sendHTML(int *sock, char *filename);
+void sendJPG(int *sock, char *filename);
 
 int main()
 {
@@ -102,19 +104,54 @@ void sendData(int *sock, char *filename) {
     char buffer[common_buffer_size];
     char type[common_buffer_size];
 
+    strcpy(buffer, filename);
+
     strtok(buffer, ".");
     strcpy(type, strtok(NULL, "."));
     if(0 == strcmp(type, "php")){
 
     }else if(0 == strcmp(type, "html")){
-
+        sendHTML(sock, filename);
     }else if(0 == strcmp(type, "jpg")){
-
+        sendJPG(sock, filename);
     }else{
         sendError(sock);
-        close(clnt_sock);
+        close(client_sock);
         return ;
     }
+}
+
+void sendHTML(int *sock, char *filename) {
+    int client_sock = *sock;
+    char buffer[buffer_size];
+    FILE *fp;
+
+    char status[] = "HTTP/1.0 200 OK\r\n";
+    char header[] = "Server: A Simple Web Server\r\nContent-Type: text/html\r\n\r\n";
+
+    write(client_sock, status, strlen(status));
+    write(client_sock, header, strlen(header));
+
+    fp = fopen(filename, "r");
+    if(!fp){
+        sendError(sock);
+        close(client_sock);
+        handleError("failed to open file");
+        return ;
+    }
+
+    fgets(buffer,sizeof(buffer), fp);
+    while(!feof(fp)) {
+        write(client_sock, buffer, strlen(buffer));
+        fgets(buffer, sizeof(buffer), fp);
+    }
+
+    fclose(fp);
+    close(client_sock);
+}
+
+void sendJPG(int *sock, char *filename) {
+
 }
 
 void handleError(const string &message) {
