@@ -25,19 +25,19 @@ void sendJPG(int *sock, char *filename);
 
 int main()
 {
-	int server_sock;
-	int client_sock;
-	
-	struct sockaddr_in server_address;
-	struct sockaddr_in client_address;
+    int server_sock;
+    int client_sock;
+    
+    struct sockaddr_in server_address;
+    struct sockaddr_in client_address;
 
-	socklen_t client_address_size;
+    socklen_t client_address_size;
 
     server_sock = socket(PF_INET, SOCK_STREAM, 0);
 
     if (server_sock == -1)
     {
-    	handleError("socket error");
+        handleError("socket error");
     }
 
     memset(&server_address,0,sizeof(server_address));
@@ -46,11 +46,11 @@ int main()
     server_address.sin_port = htons(port);
 
     if(bind(server_sock,(struct sockaddr*)&server_address, sizeof(server_address)) == -1){
-    	handleError("bind error");
+        handleError("bind error");
     }
 
     if(listen(server_sock, 5) == -1) {
-    	handleError("listen error");
+        handleError("listen error");
     }
 
     while(true) {
@@ -66,7 +66,7 @@ int main()
     //system("open http://127.0.0.1:9090");
     close(server_sock);
 
-	return 0;
+    return 0;
 }
 
 void requestHandling(int *sock){
@@ -104,9 +104,8 @@ void sendData(int *sock, char *filename) {
 
     strtok(buffer, ".");
     strcpy(type, strtok(NULL, "."));
-    if(0 == strcmp(type, "php")){
-
-    }else if(0 == strcmp(type, "html")){
+    
+    if(0 == strcmp(type, "html")){
         sendHTML(sock, filename);
     }else if(0 == strcmp(type, "jpg")){
         sendJPG(sock, filename);
@@ -179,8 +178,8 @@ void sendJPG(int *sock, char *filename) {
 }
 
 void handleError(const string &message) {
-	cout<<message;
-	exit(1);
+    cout<<message;
+    exit(1);
 }
 
 void sendError(int *sock){
